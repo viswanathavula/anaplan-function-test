@@ -1,0 +1,19 @@
+{
+  "scriptFile": "../function_app.py",
+  "entryPoint": "AnaplanApiExport",
+  "bindings": [
+    {
+      "authLevel": "anonymous",
+      "type": "httpTrigger",
+      "direction": "in",
+      "name": "req",
+      "methods": ["post"],
+      "route": "AnaplanApiExport"
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "$return"
+    }
+  ]
+}
