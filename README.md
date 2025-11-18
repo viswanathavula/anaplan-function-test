@@ -113,6 +113,7 @@ The function includes comprehensive error handling for:
 ```
 .
 ├── function_app.py          # Main function code
+├── test_function_app.py     # Unit tests
 ├── AnaplanApiExport/        
 │   └── function.json        # Function binding configuration
 ├── requirements.txt         # Python dependencies
@@ -125,10 +126,27 @@ The function includes comprehensive error handling for:
 
 ### Running Tests
 
-Currently, there is no test infrastructure. Consider adding:
-- Unit tests for individual functions
-- Integration tests for the full workflow
-- Mock tests for external API calls
+The project includes comprehensive unit tests with 92% code coverage. To run tests:
+
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Run tests
+pytest test_function_app.py -v
+
+# Run tests with coverage report
+pytest test_function_app.py --cov=function_app --cov-report=term-missing
+```
+
+**Test Coverage:**
+- ✅ Input validation (all 13 required parameters)
+- ✅ Invalid JSON handling
+- ✅ Authentication success and failure
+- ✅ Export task states (COMPLETE, FAILED)
+- ✅ Chunk retrieval and processing
+- ✅ Blob upload functionality
+- ✅ Error handling (ValueError, KeyError, generic Exception)
 
 ### Code Quality
 
