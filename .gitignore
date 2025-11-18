@@ -1,0 +1,48 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Azure Functions
+.python_packages/
+.venv/
+env/
+venv/
+
+# Local development
+local.settings.json
+.vscode/
+.idea/
+
+# Azure Functions artifacts
+bin/
+obj/
+appsettings.json
+
+# Python virtual environment
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Distribution / packaging
+.eggs/
+*.egg-info/
+dist/
+build/
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db

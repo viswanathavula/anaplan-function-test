@@ -2,7 +2,6 @@ import azure.functions as func
 import logging
 import requests
 import time
-from datetime import datetime
 from azure.storage.blob import BlobServiceClient, ContentSettings
 
 app = func.FunctionApp()
@@ -23,6 +22,19 @@ def AnaplanApiExport(req: func.HttpRequest) -> func.HttpResponse:
     try:
         req_body = req.get_json()
 
+        # Validate required parameters
+        required_params = [
+            'username', 'password', 'account_name', 'account_key', 'container_name',
+            'Anaplan_Auth_Url', 'AnaplanExportFile', 'workspace_id', 'model_id',
+            'export_id', 'api_url', 'foldername', 'environment'
+        ]
+        missing_params = [param for param in required_params if not req_body.get(param)]
+        if missing_params:
+            return func.HttpResponse(
+                f"Missing required parameters: {', '.join(missing_params)}",
+                status_code=400
+            )
+
         username = req_body.get('username')
         password = req_body.get('password')
         account_name = req_body.get('account_name')
@@ -36,8 +48,6 @@ def AnaplanApiExport(req: func.HttpRequest) -> func.HttpResponse:
         api_url_input = req_body.get('api_url')
         foldername = req_body.get('foldername')
         environment = req_body.get('environment')
-
-        current_timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
 
         response = requests.post(Anaplan_Auth_Url, auth=(username, password))
         if response.status_code not in (200, 201):
@@ -90,6 +100,12 @@ def AnaplanApiExport(req: func.HttpRequest) -> func.HttpResponse:
 
         return func.HttpResponse(f"✅ Export {AnaplanExportFile} uploaded successfully!", status_code=200)
 
+    except ValueError as e:
+        logging.error(f"Invalid JSON in request body: {str(e)}")
+        return func.HttpResponse("Invalid JSON in request body", status_code=400)
+    except KeyError as e:
+        logging.error(f"Missing key in response: {str(e)}")
+        return func.HttpResponse(f"Unexpected API response structure: {str(e)}", status_code=500)
     except Exception as e:
         logging.exception("Error in AnaplanApiExport")
         return func.HttpResponse(f"Error: {str(e)}", status_code=500)
